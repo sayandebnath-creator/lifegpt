@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LifeGPT</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+    textarea, input { width: 100%; margin-bottom: 10px; padding: 10px; }
+    button { padding: 10px 20px; }
+    .response { margin-top: 20px; background: #f0f0f0; padding: 15px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Ask LifeGPT Anything</h1>
+  <input type="text" id="name" placeholder="Your name (optional)">
+  <textarea id="question" placeholder="Type your life question here..."></textarea>
+  <button onclick="askLifeGPT()">Ask</button>
+  <div class="response" id="response"></div>
+
+  <script>
+    async function askLifeGPT() {
+      const name = document.getElementById("name").value;
+      const question = document.getElementById("question").value;
+
+      const res = await fetch("http://localhost:5000/api/life-advice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, question })
+      });
+
+      const data = await res.json();
+      document.getElementById("response").innerText = data.reply || "Something went wrong.";
+    }
+  </script>
+</body>
+</html>
